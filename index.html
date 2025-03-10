@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="es">
 <head>
     <meta charset="UTF-8">
@@ -133,11 +133,13 @@
         
         let index = 0;
         function updateContent() {
-            document.getElementById("video-source").src = contents[index].video;
-            document.getElementById("video").load();
-            document.getElementById("text").innerText = contents[index].text;
-            document.getElementById("subtext-link").href = contents[index].subtext;
-        }
+    document.getElementById("video-source").src = contents[index].video;
+    document.getElementById("video").load();
+    document.getElementById("text").innerText = contents[index].text;
+    document.getElementById("subtext-link").href = contents[index].subtext;
+    document.getElementById("subtext-link").innerText = contents[index].subtext; // Actualiza el texto visible del link
+}
+
         function prevContent() {
             index = (index - 1 + contents.length) % contents.length;
             updateContent();
@@ -152,6 +154,20 @@
             music.play();
             document.getElementById("play-music").style.display = "none";
         }
-    </script>
+</script>
+
+    <div style="margin-top: 40px; text-align: center; font-size: 24px; font-weight: bold;">
+        Sígueme en TikTok
+    </div>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 20px; margin-top: 10px;">
+        <span style="font-size: 24px;">↪︎</span>
+        <a href="https://www.tiktok.com/@teladedico_520?_t=ZM-8uYk4K1CXkj&_r=1" target="_blank">
+            <img src="https://upload.wikimedia.org/wikipedia/en/a/a9/TikTok_logo.svg" alt="TikTok" style="width: 50px; height: 50px;">
+        </a>
+        <span style="font-size: 24px;">↩︎</span>
+    </div>
+    <div class="music-text" style="margin-top: 10px;">
+        Me inspiraría a seguir haciendo más detalles
+    </div>
 </body>
 </html>
