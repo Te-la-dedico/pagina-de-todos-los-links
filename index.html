@@ -43,7 +43,7 @@
             height: 100%;
             object-fit: cover;
             border-radius: 10px;
-            transition: transform 0.5s ease-in-out;
+            transition: opacity 0.5s ease-in-out;
         }
         #text {
             font-size: 22px;
@@ -97,6 +97,13 @@
             color: gray;
             margin-top: 5px;
         }
+        /* Animaciones de desvanecimiento */
+        .fade-out {
+            opacity: 0;
+        }
+        .fade-in {
+            opacity: 1;
+        }
     </style>
 </head>
 <body>
@@ -132,29 +139,63 @@
         ];
         
         let index = 0;
+
+        function fadeOut(element) {
+            element.classList.add('fade-out');
+            setTimeout(() => {
+                element.classList.remove('fade-out');
+            }, 500); // Duración de la animación
+        }
+
+        function fadeIn(element) {
+            element.classList.add('fade-in');
+            setTimeout(() => {
+                element.classList.remove('fade-in');
+            }, 500); // Duración de la animación
+        }
+
         function updateContent() {
-    document.getElementById("video-source").src = contents[index].video;
-    document.getElementById("video").load();
-    document.getElementById("text").innerText = contents[index].text;
-    document.getElementById("subtext-link").href = contents[index].subtext;
-    document.getElementById("subtext-link").innerText = contents[index].subtext; // Actualiza el texto visible del link
-}
+            const videoElement = document.getElementById("video");
+            const textElement = document.getElementById("text");
+            const subtextLinkElement = document.getElementById("subtext-link");
+
+            // Aplicar fade-out antes de cambiar el contenido
+            fadeOut(videoElement);
+            fadeOut(textElement);
+            fadeOut(subtextLinkElement);
+
+            // Cambiar el contenido después de la animación de fade-out
+            setTimeout(() => {
+                document.getElementById("video-source").src = contents[index].video;
+                document.getElementById("video").load();
+                textElement.innerText = contents[index].text;
+                subtextLinkElement.href = contents[index].subtext;
+                subtextLinkElement.innerText = contents[index].subtext;
+
+                // Aplicar fade-in después de cambiar el contenido
+                fadeIn(videoElement);
+                fadeIn(textElement);
+                fadeIn(subtextLinkElement);
+            }, 500); // Esperar a que termine el fade-out
+        }
 
         function prevContent() {
             index = (index - 1 + contents.length) % contents.length;
             updateContent();
         }
+
         function nextContent() {
             index = (index + 1) % contents.length;
             updateContent();
         }
+
         function playMusic() {
             let music = document.getElementById("background-music");
             music.volume = 0.5;
             music.play();
             document.getElementById("play-music").style.display = "none";
         }
-</script>
+    </script>
 
     <div style="margin-top: 40px; text-align: center; font-size: 24px; font-weight: bold;">
         Sígueme en TikTok
