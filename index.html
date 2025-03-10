@@ -24,9 +24,16 @@
             font-size: 24px;
             font-weight: bold;
         }
-        .video-container {
+        .content {
+            margin-top: 20px;
+            position: relative;
             width: 100%;
-            height: 400px;
+            height: auto;
+        }
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 800px;
             display: flex;
             justify-content: center;
             align-items: center;
@@ -34,32 +41,41 @@
         .video-container video {
             width: 100%;
             height: 100%;
+            object-fit: cover;
             border-radius: 10px;
+            transition: transform 0.5s ease-in-out;
         }
         #text {
             font-size: 22px;
             font-weight: bold;
             margin-top: 10px;
+            transition: opacity 0.5s ease-in-out;
         }
         .subtext a {
             color: blue;
             text-decoration: none;
         }
-        .nav-buttons {
-            display: flex;
-            justify-content: space-between;
-            margin-top: 10px;
-        }
         .arrow {
+            position: absolute;
+            bottom: 10px;
             width: 50px;
             height: 50px;
+            line-height: 50px;
+            text-align: center;
             font-size: 24px;
             background-color: #ccc;
             border-radius: 50%;
             cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
+            transition: transform 0.2s ease-in-out;
+        }
+        .arrow-left {
+            left: 10px;
+        }
+        .arrow-right {
+            right: 10px;
+        }
+        .arrow:active {
+            transform: scale(0.9);
         }
         #play-music {
             margin-top: 30px;
@@ -81,71 +97,40 @@
             color: gray;
             margin-top: 5px;
         }
-        .emoji-title {
-            font-size: 20px;
-            font-weight: bold;
-            margin-top: 20px;
-        }
-        .emoji-container {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-            margin-top: 10px;
-        }
-        .emoji {
-            font-size: 30px;
-            cursor: pointer;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
     </style>
 </head>
 <body>
     <div class="title">Te lo dedico</div>
     <div class="container">
-        <div class="video-container">
-            <video id="video" autoplay loop muted>
-                <source id="video-source" src="https://i.imgur.com/jjDpE1M.mp4" type="video/mp4">
-                Tu navegador no soporta el video.
-            </video>
+        <div class="content">
+            <div class="video-container">
+                <video id="video" autoplay loop muted>
+                    <source id="video-source" src="https://i.imgur.com/jjDpE1M.mp4" type="video/mp4">
+                    Tu navegador no soporta el video.
+                </video>
+            </div>
+            <div id="text">Carta de Amor</div>
+            <div id="subtext" class="subtext"><a id="subtext-link" href="https://te-la-dedico.github.io/" target="_blank">https://te-la-dedico.github.io/</a></div>
         </div>
-        <div id="text">Carta de Amor</div>
-        <div id="subtext" class="subtext">
-            <a id="subtext-link" href="https://te-la-dedico.github.io/" target="_blank">https://te-la-dedico.github.io/</a>
-        </div>
-
-        <!-- Botones de navegación -->
-        <div class="nav-buttons">
-            <div class="arrow" onclick="prevContent()">⬅️</div>
-            <div class="arrow" onclick="nextContent()">➡️</div>
-        </div>
+        <div class="arrow arrow-left" onclick="prevContent()">⬅️</div>
+        <div class="arrow arrow-right" onclick="nextContent()">➡️</div>
     </div>
-
     <audio id="background-music" loop>
         <source src="https://www.dropbox.com/s/o3y38b5aus9gxsn/SAN%20VALENT%C3%8DN-AMOR%20Y%20AMISTAD%20M%C3%9ASICA%20G.mp3?raw=1" type="audio/mp3">
         Tu navegador no soporta el audio.
     </audio>
     <button id="play-music" onclick="playMusic()">🎵 REPRODUCEME</button>
     <div class="music-text">🢁 mientras buscas relájate con la música 🢁</div>
-
-    <!-- Sección de Reacciones -->
-    <div class="emoji-title">🙏 Déjame tu reacción 🙏</div>
-    <div class="emoji-container">
-        <div class="emoji" onclick="likeEmoji('like')">👍 <span class="likes" id="like-likes">0</span></div>
-        <div class="emoji" onclick="likeEmoji('heart')">❤️ <span class="likes" id="heart-likes">0</span></div>
-        <div class="emoji" onclick="likeEmoji('surprised')">😮 <span class="likes" id="surprised-likes">0</span></div>
-    </div>
-
     <script>
         const contents = [
             { video: "https://i.imgur.com/jjDpE1M.mp4", text: "Carta de Amor", subtext: "https://te-la-dedico.github.io/" },
             { video: "https://i.imgur.com/WJGgdUs.mp4", text: "Frases de personajes", subtext: "https://te-la-dedico.github.io/frases/" },
             { video: "https://i.imgur.com/pf64dyo.mp4", text: "Hazme clic para tu Novia", subtext: "https://te-la-dedico.github.io/hazme-clic/" },
             { video: "https://i.imgur.com/fiM4jiM.mp4", text: "Hazme clic para tu Novio", subtext: "https://te-la-dedico.github.io/hazme-click/" },
-            { video: "https://i.imgur.com/DBWQuUO.mp4", text: "Te gustaría ser mi novia?", subtext: "https://te-la-dedico.github.io/te.gustaria-/" }
+            { video: "https://i.imgur.com/DBWQuUO.mp4", text: "Te gustaría ser mi novia?", subtext: "https://te-la-dedico.github.io/te.gustaria-/" },
+            { video: "https://i.imgur.com/example.mp4", text: "Próximamente más videos", subtext: "" }
         ];
-
+        
         let index = 0;
 
         function updateContent() {
